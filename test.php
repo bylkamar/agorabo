@@ -1,0 +1,2 @@
+<td><?php echo $Pegi->age; ?><input type="hidden" name="txtAgePegi" value="<?php echo $Pegi->age; ?>" /></td>
+                                <td><?php echo $Pegi->description; ?><input type="hidden" name="txtDescriptionPegi" value="<?php echo $Pegi->description; ?>" /></td>
