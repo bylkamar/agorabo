@@ -552,8 +552,8 @@ class PdoJeux
             // récupérer l'objet
             $utilisateur = $requete_prepare->fetch();
             if ($utilisateur != null) {
-                echo hash("sha512", $utilisateur->selMembre, $mdpMembre);
-                if ($utilisateur->mdpMembre == $mdpMembre) {
+                $hashedPassword = hash("sha512", $mdpMembre . $utilisateur->selMembre);
+                if ($utilisateur->mdpMembre == $hashedPassword) {
                     return $utilisateur;
                 }
             }

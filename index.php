@@ -9,7 +9,7 @@
  * 
  */ // démarrer la session !!!!!!!! A FAIRE AVANT TOUT CODE HTML !!!!!!!!
 session_start();
-require 'vue/v_header.html';	// entête des pages HTML
+require 'vue/v_header.php';	// entête des pages HTML anciennement html
 
 // inclure les bibliothèques de fonctions
 require_once 'app/_config.inc.php';
@@ -20,7 +20,7 @@ $db = PdoJeux::getPdoJeux();
 // Si aucun utilisateur connecté, on considère que la page demandée est la page deconnexion
 // $_SESSION['idUtilisateur'] est crée lorsqu'un utilisateur autorisé se connecte (dans c_connexion.php)
 if (!isset($_SESSION['idUtilisateur'])) {
-	require 'vue/v_menu.php'; // A enlever !!!
+	// require 'vue/v_menu.php'; // A enlever !!!
 
 	require 'controleur/c_connexion.php';
 } else {
@@ -37,7 +37,7 @@ if (!isset($_SESSION['idUtilisateur'])) {
 		case 'index': {
 				$menuActif = '';
 				require 'vue/v_menu.php';
-				require 'vue/v_accueil.html';
+				require 'vue/v_accueil.php';
 				break;
 			}
 		case 'gererGenres': {
