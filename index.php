@@ -9,11 +9,23 @@
  * 
  */ // démarrer la session !!!!!!!! A FAIRE AVANT TOUT CODE HTML !!!!!!!!
 session_start();
-require 'vue/v_header.php';	// entête des pages HTML anciennement html
+// require 'vue/v_header.php';	// entête des pages HTML anciennement html
+require 'vue/v_headerTwig.html';
 
 // inclure les bibliothèques de fonctions
 require_once 'app/_config.inc.php';
 require_once 'modele/class.PdoJeux.inc.php';
+
+// pour twig
+require_once 'vendor/autoload.php';
+$loader = new \Twig\Loader\FilesystemLoader('vue');
+$twig = new \Twig\Environment($loader, array(
+	'cache' => TWIG_CACHE,
+	'debug' => TWIG_DEBUG
+));
+$twig->addGlobal('session', $_SESSION);
+
+// pour que twig connaisse la variable glob
 
 // Connexion au serveur et à la base (A)
 $db = PdoJeux::getPdoJeux();
@@ -36,8 +48,9 @@ if (!isset($_SESSION['idUtilisateur'])) {
 	switch ($uc) {
 		case 'index': {
 				$menuActif = '';
-				require 'vue/v_menu.php';
-				require 'vue/v_accueil.php';
+				// require 'vue/v_menu.php';
+				// require 'vue/v_accueil.php';
+				echo $twig->render('accueil.html.twig');
 				break;
 			}
 		case 'gererGenres': {
@@ -83,4 +96,4 @@ if (!isset($_SESSION['idUtilisateur'])) {
 $db = null;
 
 // pied de page
-require("vue/v_footer.html");
+// require("vue/v_footer.html");

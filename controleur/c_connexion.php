@@ -7,7 +7,7 @@ if (!isset($_POST['cmdAction'])) {
 }
 switch ($action) {
     case 'demanderConnexion': {
-            require './vue/v_connexion.php';
+            echo $twig->render('connexion.html.twig');
             break;
         }
 
@@ -18,7 +18,7 @@ switch ($action) {
             // positionner le message d'erreur $erreur
             if ($utilisateur == null) {
                 $erreur = "Identifiant ou mot de passe incorrecte";
-                require './vue/v_connexion.php';
+                echo $twig->render('connexion.html.twig', array('erreur' => $erreur));
             } else {
                 // créer trois variables de session pour id utilisateur, nom et prénom
                 $_SESSION['idUtilisateur'] = $utilisateur->idMembre;
