@@ -12,6 +12,7 @@
 
 	$idJeuModif = -1;		// positionné si demande de modification
 	$notification = 'rien';	// pour notifier la mise à jour dans la vue
+	$idMarqueNotif = -1; // positionné si mise à jour dans la vue
 
 	// selon l'action demandée on réalise l'action 
 	switch ($action) {

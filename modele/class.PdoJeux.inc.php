@@ -97,6 +97,27 @@ class PdoJeux
     }
 
     /**
+     * Retourne tous les genres sous forme d'un tableau d'objets
+     * avec également le nombre de jeux de ce genre
+     *
+     * @return le tableau d'objets (Genre)
+     */
+    public function getLesGenresComplet()
+    {
+        $requete = 'SELECT G.idGenre as identifiant, G.libGenre as libelle,
+(SELECT COUNT(refJeu) FROM jeu_video AS J WHERE J.idGenre = G.idGenre) AS nbJeux
+FROM genre AS G ORDER BY G.libGenre';
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbGenres = $resultat->fetchAll();
+            return $tbGenres;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
+    }
+
+    /**
      * Retourne tous les Pegis sous forme d'un tableau d'objets 
      * 
      * @return array le tableau d'objets  (Genre)
@@ -152,6 +173,27 @@ class PdoJeux
             $resultat = PdoJeux::$monPdo->query($requete);
             $tbMarques  = $resultat->fetchAll();
             return $tbMarques;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
+    }
+
+    /**
+     * Retourne tous les Marquess sous forme d'un tableau d'objets
+     * avec également le nombre de jeux de ce Marques
+     *
+     * @return le tableau d'objets (Marques)
+     */
+    public function getLesMarquesComplet()
+    {
+        $requete = 'SELECT M.idMarque as identifiant, M.nomMarque as libelle,
+(SELECT COUNT(refJeu) FROM jeu_video AS J WHERE J.idMarque = M.idMarque) AS nbJeux
+FROM marque AS M ORDER BY M.nomMarque';
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbMarquess = $resultat->fetchAll();
+            return $tbMarquess;
         } catch (PDOException $e) {
             die('<div class = "erreur">Erreur dans la requête !<p>'
                 . $e->getmessage() . '</p></div>');
@@ -565,5 +607,26 @@ class PdoJeux
                 . $e->getmessage() . '</p></div>');
         }
         return null;
+    }
+
+    /**
+     * Retourne l'identifiant et le nom complet de toutes les Membres sous forme d'un tableau d'objets
+     *
+     * @return le tableau d'objets
+     */
+    public function getLesMembres()
+    {
+        $requete = 'SELECT idMembre as identifiant, CONCAT(prenomMembre, " ", nomMembre) AS
+libelle
+FROM membre
+ORDER BY nomMembre';
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbMembres = $resultat->fetchAll();
+            return $tbMembres;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
     }
 }

@@ -12,6 +12,7 @@
 
 	$idMarqueModif = -1;		// positionné si demande de modification
 	$notification = 'rien';	// pour notifier la mise à jour dans la vue
+	$idMarqueNotif = -1; // positionné si mise à jour dans la vue
 
 	// selon l'action demandée on réalise l'action 
 	switch ($action) {
@@ -47,7 +48,16 @@
 	}
 
 	// l' affichage des Marques se fait dans tous les cas	
-	$tbMarques  = $db->getLesMarques();
-	require 'vue/v_lesMarques.php';
-
+	$tbMarques  = $db->getLesMarquesComplet();
+	// require 'vue/v_lesMarques.php';
+	// l' affichage des genres se fait dans tous les cas	
+	$tbMembres = $db->getLesMembres();
+	echo $twig->render('lesMarques.html.twig', array(
+		'menuActif' => 'Marques',
+		'tbMarques' => $tbMarques,
+		'tbMembres' => $tbMembres,
+		'idMarqueModif' => $idMarqueModif,
+		'idMarqueNotif' => $idMarqueNotif,
+		'notification' => $notification
+	));
 	?>

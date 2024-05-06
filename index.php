@@ -18,6 +18,7 @@ require_once 'modele/class.PdoJeux.inc.php';
 
 // pour twig
 require_once 'vendor/autoload.php';
+
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, array(
 	'cache' => TWIG_CACHE,
