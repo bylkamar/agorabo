@@ -106,11 +106,35 @@ class PdoJeux
     {
         $requete = 'SELECT G.idGenre as identifiant, G.libGenre as libelle,
 (SELECT COUNT(refJeu) FROM jeu_video AS J WHERE J.idGenre = G.idGenre) AS nbJeux
-FROM genre AS G ORDER BY G.libGenre';
+FROM genre AS G
+ORDER BY G.libGenre';
         try {
             $resultat = PdoJeux::$monPdo->query($requete);
             $tbGenres = $resultat->fetchAll();
             return $tbGenres;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
+    }
+
+
+
+    /**
+     * Retourne tous les Pegis sous forme d'un tableau d'objets 
+     * 
+     * @return array le tableau d'objets  (Genre)
+     */
+    public function getLesPegis(): array
+    {
+        $requete =  'SELECT idPegi as identifiant, ageLimite as age, descPegi AS description
+						FROM pegi 
+						ORDER BY idPegi';
+
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbPegis  = $resultat->fetchAll();
+            return $tbPegis;
         } catch (PDOException $e) {
             die('<div class = "erreur">Erreur dans la requête !<p>'
                 . $e->getmessage() . '</p></div>');
@@ -122,7 +146,7 @@ FROM genre AS G ORDER BY G.libGenre';
      * 
      * @return array le tableau d'objets  (Genre)
      */
-    public function getLesPegis(): array
+    public function getLesPegisComplet(): array
     {
         $requete =  'SELECT idPegi as identifiant, ageLimite as age, descPegi AS description
 						FROM pegi 
@@ -158,6 +182,30 @@ FROM genre AS G ORDER BY G.libGenre';
                 . $e->getmessage() . '</p></div>');
         }
     }
+
+
+    /**
+     * Retourne tous les Plateformes sous forme d'un tableau d'objets 
+     * 
+     * @return array le tableau d'objets  (Genre)
+     */
+    public function getLesPlateformesComplet(): array
+    {
+        $requete = 'SELECT G.idPlateforme as identifiant, G.libPlateforme as libelle,
+(SELECT COUNT(refJeu) FROM jeu_video AS J WHERE J.idPlateforme = G.idPlateforme) AS nbJeux
+FROM Plateforme AS G
+ORDER BY G.libPlateforme';
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbPlateformes  = $resultat->fetchAll();
+            return $tbPlateformes;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
+    }
+
+
 
     /**
      * Retourne tous les Plateformes sous forme d'un tableau d'objets 
@@ -230,6 +278,30 @@ FROM marque AS M ORDER BY M.nomMarque';
         }
     }
 
+    /**
+     * Retourne tous les Plateformes sous forme d'un tableau d'objets 
+     * 
+     * @return array le tableau d'objets  (Genre)
+     */
+    public function getLesJeuxComplet(): array
+    {
+        // $requete =  'SELECT refJeu as identifiant, nom as libelle, idPlateforme,idPegi,idGenre,idMarque,prix,dateParution 
+        //               FROM jeu_video
+        //               ORDER BY dateParution';
+
+        $requete =  'SELECT d.refJeu as identifiant, d.nom as libelle, d.idPlateforme,d.idPegi,d.idGenre,d.idMarque,d.prix,d.dateParution, g.libGenre, g.idGenre , p.libPlateforme, p.idPlateforme, pe.idPegi,pe.ageLimite, pe.descPegi, m.idMarque, m.nomMarque
+                      FROM jeu_video As d INNER JOIN genre As g ON d.idGenre = g.idGenre INNER join plateforme As p ON d.idPlateforme = p.idPlateforme INNER JOIN pegi As pe ON d.idPegi = pe.idPegi INNER JOIN marque As m ON d.idMarque = m.idMarque
+                      ORDER BY dateParution';
+
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbJeux  = $resultat->fetchAll();
+            return $tbJeux;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
+    }
 
     /**
      * Ajoute un nouveau genre avec le libellé donné en paramètre
@@ -340,8 +412,6 @@ FROM marque AS M ORDER BY M.nomMarque';
             $requete_prepare->bindParam(':unPrixJeu', $prixJeu, PDO::PARAM_STR);
             $requete_prepare->bindParam(':unDateJeu', $date, PDO::PARAM_STR);
             $requete_prepare->execute();
-            echo PdoJeux::$monPdo->lastInsertId();
-            // récupérer l'identifiant crée
             return $refJeu;
         } catch (Exception $e) {
             die('<div class = "erreur">Erreur dans la requête !<p>'
@@ -468,7 +538,6 @@ FROM marque AS M ORDER BY M.nomMarque';
             $requete_prepare->bindParam(':unDateJeu', $date, PDO::PARAM_STR);
             $requete_prepare->execute();
         } catch (Exception $e) {
-            echo $requete;
             die('<div class = "erreur">Erreur dans la requête !<p>'
                 . $e->getmessage() . '</p></div>');
         }
@@ -610,7 +679,7 @@ FROM marque AS M ORDER BY M.nomMarque';
     }
 
     /**
-     * Retourne l'identifiant et le nom complet de toutes les Membres sous forme d'un tableau d'objets
+     * Retourne l'identifiant et le nom complet de toutes les membres sous forme d'un tableau d'objets
      *
      * @return le tableau d'objets
      */
@@ -618,7 +687,7 @@ FROM marque AS M ORDER BY M.nomMarque';
     {
         $requete = 'SELECT idMembre as identifiant, CONCAT(prenomMembre, " ", nomMembre) AS
 libelle
-FROM membre
+FROM Membre
 ORDER BY nomMembre';
         try {
             $resultat = PdoJeux::$monPdo->query($requete);

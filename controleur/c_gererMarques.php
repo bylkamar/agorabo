@@ -48,16 +48,18 @@
 	}
 
 	// l' affichage des Marques se fait dans tous les cas	
-	$tbMarques  = $db->getLesMarquesComplet();
+	// $tbMarques  = $db->getLesMarques();
 	// require 'vue/v_lesMarques.php';
-	// l' affichage des genres se fait dans tous les cas	
-	$tbMembres = $db->getLesMembres();
+
+	$tbMarques = $db->getLesMarques();
+	$tbMarques = $db->getLesMarquesComplet();
 	echo $twig->render('lesMarques.html.twig', array(
-		'menuActif' => 'Marques',
+		'menuActif' => 'Jeux',
 		'tbMarques' => $tbMarques,
-		'tbMembres' => $tbMembres,
+		'tbMarques' => $tbMarques,
 		'idMarqueModif' => $idMarqueModif,
 		'idMarqueNotif' => $idMarqueNotif,
 		'notification' => $notification
 	));
+
 	?>

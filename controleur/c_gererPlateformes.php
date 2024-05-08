@@ -12,6 +12,7 @@
 
 	$idPlateformeModif = -1;		// positionné si demande de modification
 	$notification = 'rien';	// pour notifier la mise à jour dans la vue
+	$idPlateformeNotif = -1; // positionné si mise à jour dans la vue
 
 	// selon l'action demandée on réalise l'action 
 	switch ($action) {
@@ -47,7 +48,18 @@
 	}
 
 	// l' affichage des Plateformes se fait dans tous les cas	
-	$tbPlateformes  = $db->getLesPlateformes();
-	require 'vue/v_lesPlateformes.php';
+	// $tbPlateformes  = $db->getLesPlateformes();
+	// require 'vue/v_lesPlateformes.php';
+
+	$tbMembres = $db->getLesMembres();
+	$tbPlateformes = $db->getLesPlateformesComplet();
+	echo $twig->render('lesPlateformes.html.twig', array(
+		'menuActif' => 'Jeux',
+		'tbPlateformes' => $tbPlateformes,
+		'tbPlateformes' => $tbPlateformes,
+		'idPlateformeModif' => $idPlateformeModif,
+		'idPlateformeNotif' => $idPlateformeNotif,
+		'notification' => $notification
+	));
 
 	?>
