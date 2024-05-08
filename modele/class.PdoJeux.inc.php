@@ -205,7 +205,26 @@ ORDER BY G.libPlateforme';
         }
     }
 
-
+    /**
+     * Retourne tous les Plateformes sous forme d'un tableau d'objets 
+     * 
+     * @return array le tableau d'objets  (Genre)
+     */
+    public function getLesMarquesComplet(): array
+    {
+        $requete = 'SELECT G.idMarque as identifiant, G.nomMarque as libelle,
+(SELECT COUNT(refJeu) FROM jeu_video AS J WHERE J.idMarque = G.idMarque) AS nbJeux
+FROM Marque AS G
+ORDER BY G.nomMarque';
+        try {
+            $resultat = PdoJeux::$monPdo->query($requete);
+            $tbMarques  = $resultat->fetchAll();
+            return $tbMarques;
+        } catch (PDOException $e) {
+            die('<div class = "erreur">Erreur dans la requête !<p>'
+                . $e->getmessage() . '</p></div>');
+        }
+    }
 
     /**
      * Retourne tous les Plateformes sous forme d'un tableau d'objets 
@@ -221,27 +240,6 @@ ORDER BY G.libPlateforme';
             $resultat = PdoJeux::$monPdo->query($requete);
             $tbMarques  = $resultat->fetchAll();
             return $tbMarques;
-        } catch (PDOException $e) {
-            die('<div class = "erreur">Erreur dans la requête !<p>'
-                . $e->getmessage() . '</p></div>');
-        }
-    }
-
-    /**
-     * Retourne tous les Marquess sous forme d'un tableau d'objets
-     * avec également le nombre de jeux de ce Marques
-     *
-     * @return le tableau d'objets (Marques)
-     */
-    public function getLesMarquesComplet()
-    {
-        $requete = 'SELECT M.idMarque as identifiant, M.nomMarque as libelle,
-(SELECT COUNT(refJeu) FROM jeu_video AS J WHERE J.idMarque = M.idMarque) AS nbJeux
-FROM marque AS M ORDER BY M.nomMarque';
-        try {
-            $resultat = PdoJeux::$monPdo->query($requete);
-            $tbMarquess = $resultat->fetchAll();
-            return $tbMarquess;
         } catch (PDOException $e) {
             die('<div class = "erreur">Erreur dans la requête !<p>'
                 . $e->getmessage() . '</p></div>');
