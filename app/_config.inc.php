@@ -23,3 +23,8 @@ define('DB_DATABASE', 'agora');        // nom de la base de données
 define('DB_USER', 'root');            // nom d'utilisateur jai remplacer le compte lecture vue que j'ai supprimer mon repertoire www
 define('DB_PWD', '');                  // mot de passe
 define('DSN', 'mysql:dbname=' . DB_DATABASE . ';host=' . DB_SERVER);
+
+//  constantes pour twig
+define('TWIG_CACHE', false); // mise en cache, en production à remplacer par
+// '/path/to/compilation_cache'
+define('TWIG_DEBUG', true); // mode debug
