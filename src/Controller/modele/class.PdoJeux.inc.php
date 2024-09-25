@@ -514,6 +514,7 @@ ORDER BY G.nomMarque';
      */
     public function modifierJeu(string $refJeu, int $idPlateforme, int $idPegi, int $idGenre, int $idMarque, string $nomJeu, float $prixJeu, string $date): void
     {
+        echo $refJeu;
         try {
             $requete = "UPDATE jeu_video "
                 . "SET idPlateforme = :unIdPlateforme, "
