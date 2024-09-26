@@ -60,10 +60,11 @@ class JeuxController extends AbstractController
     public function ajouter(SessionInterface $session, Request $request)
     {
         $db = PdoJeux::getPdoJeux();
-        if (!empty($request->request->get('txtLibGenre'))) {
+        if (!empty($request->request->get('txtRefJeu'))) {
             $idJeuNotif = $db->ajouterJeu($request->request->get('txtRefJeu'), $request->request->get('txtIdPlateformeJeu'), $request->request->get('txtIdPegiJeu'), $request->request->get('txtIdGenreJeu'), $request->request->get('txtIdMarqueJeu'), $request->request->get('txtNomJeu'), $request->request->get('prixJeu'), $request->request->get('txtDateParutionJeu'));
             $notification = 'Ajouté';
         }
+
         return $this->afficherJeux($db, -1, $idJeuNotif, $notification);
     }
     #[Route('/jeux/demandermodifier', name: 'jeux_demandermodifier')]

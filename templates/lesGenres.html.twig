@@ -20,9 +20,6 @@
 								Libellé</th>
 							<th>
 								<i class="fa fa-bookmark"></i>
-								Spécialiste</th>
-							<th>
-								<i class="fa fa-bookmark"></i>
 								Nombre jeux</th>
 							<th></th>
 						</tr>
@@ -38,16 +35,11 @@
 									caractères"/>
 								</td>
 								<td>
-									{% set tbObjets, name, size, idSelect = tbMembres, 'lstMembre', 1, ''
-%}
-									{{ include('liste.html.twig') }}
-								</td>
-								<td>
 									0
 								</td>
 								<td>
 									<button class="btn btn-primary btn-xs" type="submit" name="cmdAction" value="ajouterNouveauGenre" title="Enregistrer nouveau genre">
-										<i class="fa fasave"></i>
+										<i class="fa fa-save"></i>
 									</button>
 									<button class="btn btn-info btn-xs" type="reset" title="Effacer la
 											saisie">
