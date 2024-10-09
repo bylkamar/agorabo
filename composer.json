@@ -1,8 +1,4 @@
 {
-<<<<<<< HEAD
-    "require": {
-        "twig/twig": "^3.9"
-=======
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -77,6 +73,5 @@
         "symfony/debug-bundle": "7.1.*",
         "symfony/stopwatch": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*"
->>>>>>> dev
     }
 }
