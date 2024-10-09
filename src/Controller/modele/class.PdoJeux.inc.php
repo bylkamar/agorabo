@@ -477,7 +477,6 @@ ORDER BY G.nomMarque';
             $requete_prepare->bindValue(':unAgePegi', $agePegi, PDO::PARAM_INT);
             $requete_prepare->bindParam(':unDescriptionPegi', $descriptionPegi, PDO::PARAM_STR);
             $requete_prepare->execute();
-            print_r(gettype($idPegi));
         } catch (Exception $e) {
             die('<div class = "erreur">Erreur dans la requête !<p><br>' . $requete . "<br>"
                 . $e->getmessage() . '</p></div>');

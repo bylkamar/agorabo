@@ -10,14 +10,13 @@
             <div id="sidebar" class="nav-collapse ">
  <!-- sidebar menu start-->
                  <ul class="sidebar-menu" id="nav-accordion">
-                    <p class="centered"><a href="profile.html"><img src="{{
+                    <p class="centered"><a href="{{path('accueil')}}"><img src="{{
 asset('assets/img/greece-1162816_640.jpg') }}" class="img-circle" width="80"></a></p>
                     <h5 class="centered">MJC Agora</h5>
                     <li class="sub-menu">
                      <a
-                        {% if menuActif is defined and menuActif == 'Jeux' %} class="active" {%
-endif %}
-                        href="index.php" ><i class="fa fa-desktop"></i>
+                        {% if menuActif is defined and menuActif == 'Jeux' %} class="active" {% endif %}
+                        href="{{path('accueil')}}" ><i class="fa fa-desktop"></i>
  <span>Jeux vidéos</span>
  </a>
  <ul class="sub">
