@@ -49,7 +49,7 @@ class JeuxController extends AbstractController
     #[Route('/jeux', name: 'jeux_afficher')]
     public function index(SessionInterface $session)
     {
-        if ($session->has('idUtilisateur')) {
+        if ($this->getUser()) {
             $db = PdoJeux::getPdoJeux();
             return $this->afficherJeux($db, -1, -1, 'rien');
         } else {

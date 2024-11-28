@@ -47,7 +47,7 @@ class MarquesController extends AbstractController
     #[Route('/marques', name: 'marques_afficher')]
     public function index(SessionInterface $session)
     {
-        if ($session->has('idUtilisateur')) {
+        if ($this->getUser()) {
             $db = PdoJeux::getPdoJeux();
             return $this->afficherMarques($db, -1, -1, 'rien');
         } else {

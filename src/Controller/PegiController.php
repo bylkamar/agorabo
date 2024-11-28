@@ -42,7 +42,7 @@ class PegiController extends AbstractController
     #[Route('/pegi', name: 'pegis_afficher')]
     public function index(SessionInterface $session)
     {
-        if ($session->has('idUtilisateur')) {
+        if ($this->getUser()) {
             $db = PdoJeux::getPdoJeux();
             return $this->afficherPegi($db, -1, -1, 'rien');
         } else {

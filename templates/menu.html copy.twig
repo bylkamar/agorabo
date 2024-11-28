@@ -19,7 +19,7 @@ asset('assets/img/greece-1162816_640.jpg') }}" class="img-circle" width="80"></a
                         href="{{path('accueil')}}" ><i class="fa fa-desktop"></i>
  <span>Jeux vidéos</span>
  </a>
- <ul class="sub">
+<ul class="sub">
  <li><a href="{{path('jeux_afficher')}}">Jeux</a></li>
  <li><a href="{{path('genres_afficher')}}">Genres</a></li>
  <li><a
@@ -31,19 +31,12 @@ href="{{path('marques_afficher')}}">Marques</a></li>
 <li><a href="{{path('app_tournois')}}">Tournois</a></li>
 {% endif %}
  </ul>
-
-{% if is_granted('ROLE_ADMIN') %}
-<li class="menu">
-<a href="{{path('app_membres_index')}}">
-<i class="fa fa-user"></i>
-<span>Membres</span>
-</a>
-</li>
-{% endif %}
  </li>
+ 
+</ul>
+
  <li class="sub-menu">
- <a
- {% if menuActif is defined and menuActif == 'Clubs' %} class="active"
+ <a {% if menuActif is defined and menuActif == 'Clubs' %} class="active"
 {% endif %}
  href="javascript:;">
  <i class="fa fa-group"></i>

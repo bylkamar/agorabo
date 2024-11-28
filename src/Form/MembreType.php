@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Membre;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,6 +23,12 @@ class MembreType extends AbstractType
             ->add('rueMembre')
             ->add('cpMembre')
             ->add('villeMembre')
+            ->add('roles', ChoiceType::class, [
+                'choices' => ['Utilisateur' => 'ROLE_USER', 'Administrateur' => 'ROLE_ADMIN'],
+                'expanded' => true,
+                'multiple' => true,
+                'label' => 'Rôles'
+            ])
         ;
     }
 
