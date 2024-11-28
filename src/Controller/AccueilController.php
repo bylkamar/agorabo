@@ -17,6 +17,7 @@ class AccueilController extends AbstractController
         if ($this->getUser()) {
             return $this->render('accueil.html.twig');
         } else {
+            $error = null;
             // sinon on affiche la page de connexion
             return $this->render('security/login.html.twig');
         }
