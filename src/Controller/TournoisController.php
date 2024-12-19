@@ -86,6 +86,7 @@ class TournoisController extends AbstractController
         $tournoi = new Tournoi();
         $tournoi->setLibelle('Tournois e-sport 2024');
         $tournoi->setdate(new \DateTime("2024-10-14 00:00:00"));
+        $tournoi->setNbParticipants(0);
         // mettre en relation le tournoi avec la catégorie
         $tournoi->setCategorie($categorie);
         // persister les objets
