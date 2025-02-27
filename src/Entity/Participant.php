@@ -22,10 +22,12 @@ class Participant
     private ?string $telephone = null;
     #[ORM\Column(length: 100)]
     private ?string $email = null;
+    
     /**
      * @var Collection<int, Tournoi>
      */
     #[ORM\ManyToMany(targetEntity: Tournoi::class, mappedBy: 'participants')]
+    
     private Collection $tournois;
     public function __construct()
     {

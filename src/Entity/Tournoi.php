@@ -15,23 +15,30 @@ class Tournoi
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
     #[ORM\Column(length: 40)]
     private ?string $libelle = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
+
     #[ORM\ManyToOne(inversedBy: 'tournois')]
     private ?CatTournois $categorie = null;
+
     #[ORM\Column(nullable: true)]
+    // #[ORM\Column]
+    private ?int $nbParticipants = null;
     /**
      * @var Collection<int, Participant>
      */
     #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'tournois')]
     private Collection $participants;
 
-    #[ORM\Column]
-    private ?int $nbParticipants = null;
+
+
     public function getId(): ?int
     {
         return $this->id;

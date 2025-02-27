@@ -35,6 +35,9 @@ class MembreFixtures extends Fixture
             $membre->setRueMembre($this->faker->streetAddress);
             $membre->setVilleMembre($this->faker->city);
             $membre->setCpMembre($this->faker->numberBetween(111111, 999999));
+            if ($i == 0) {
+                $membre->setRoles(array("ROLE_USER", "ROLE_ADMIN"));
+            }
             $manager->persist($membre);
         }
         $manager->flush();

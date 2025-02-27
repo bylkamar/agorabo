@@ -79,7 +79,7 @@ class TournoisController extends AbstractController
     #[Route('/tournoi/complet/creer', name: 'app_tournoi_complet_creer')]
     public function creerTournoiComplet(EntityManagerInterface $entityManager)
     {
-        // créer une catégoriede tournoi
+        // créer une catégorie de tournoi
         $categorie = new CatTournois();
         $categorie->setLibelle('Tournois RetroGaming');
         // créer un tournoi
