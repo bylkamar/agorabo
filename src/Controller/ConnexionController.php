@@ -41,6 +41,6 @@ class ConnexionController extends AbstractController
         $session->clear();
         $session->invalidate();
         // redirection vers l'accueil
-        return $this->redirectToRoute('accueil');
+        return $this->redirectToRoute('app_logout');
     }
 }

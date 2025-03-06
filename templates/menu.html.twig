@@ -27,9 +27,27 @@ href="{{path('plateformes_afficher')}}">Plateformes</a></li>
  <li><a
 href="{{path('marques_afficher')}}">Marques</a></li>
  <li><a href="{{path('pegis_afficher')}}">Pegi</a></li>
- <li><a
-href="index.php?uc=gererTournois&action=afficherTournois">Tournois</a></li>
+{% if app.user %}
+<li><a href="{{path('app_tournois')}}">Tournois</a></li>
+{% endif %}
  </ul>
+
+{% if is_granted('ROLE_ADMIN') %}
+<li class="menu">
+<a href="{{path('app_membres_index')}}">
+<i class="fa fa-user"></i>
+<span>Membres</span>
+</a>
+</li>
+
+<li class="menu">
+<a href="{{path('app_stages_index')}}">
+<i class="fa fa-th"></i>
+<span>Stages</span>
+</a>
+</li>
+
+{% endif %}
  </li>
  <li class="sub-menu">
  <a

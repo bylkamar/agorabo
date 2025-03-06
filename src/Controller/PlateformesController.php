@@ -47,7 +47,7 @@ class PlateformesController extends AbstractController
     #[Route('/plateformes', name: 'plateformes_afficher')]
     public function index(SessionInterface $session)
     {
-        if ($session->has('idUtilisateur')) {
+        if ($this->getUser()) {
             $db = PdoJeux::getPdoJeux();
             return $this->afficherPlateformes($db, -1, -1, 'rien');
         } else {

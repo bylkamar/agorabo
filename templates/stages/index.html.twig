@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stage index
+{% endblock %}
+
+{% block body %}
+	<h1>Stage</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Identifiant</th>
+				<th>Libelle</th>
+				<th>Date</th>
+				<th>Nombre participants max</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stage in stages %}
+				<tr>
+					<td>{{ stage.id }}</td>
+					<td>{{ stage.libelle }}</td>
+					<td>{{ stage.date ? stage.date|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ stage.nombreParticipants }}</td>
+					<td>
+						<a href="{{ path('app_stages_show', {'id': stage.id}) }}">Afficher</a>
+						<a href="{{ path('app_stages_edit', {'id': stage.id}) }}">Modifier</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">Pas de stages dans la base de connaissance</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_stages_new') }}">Nouveau stage</a>
+{% endblock %}

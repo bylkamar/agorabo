@@ -42,7 +42,7 @@ class GenresController extends AbstractController
     #[Route('/genres', name: 'genres_afficher')]
     public function index(SessionInterface $session)
     {
-        if ($session->has('idUtilisateur')) {
+        if ($this->getUser()) {
             $db = PdoJeux::getPdoJeux();
             return $this->afficherGenres($db, -1, -1, 'rien');
         } else {
