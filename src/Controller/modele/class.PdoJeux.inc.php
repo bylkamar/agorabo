@@ -1,7 +1,7 @@
 ﻿<?php
 
 use function PHPSTORM_META\type;
-
+// NE SERT PLUS A RIEN NE PAS REGARDER / TOUCHER
 /**
  *  AGORA
  * 	©  Logma, 2019

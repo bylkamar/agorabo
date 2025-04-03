@@ -39,7 +39,18 @@ href="{{path('marques_afficher')}}">Marques</a></li>
 <span>Membres</span>
 </a>
 </li>
-
+<li class="sub-menu">
+<a{% if menuActif is defined and menuActif == 'Gestion' %}
+class="active" {% endif %} href="javascript:;" >
+<i class="fa fa-user"></i>
+<span>Gestion</span>
+</a>
+<ul class="sub">
+<li><a href="{{path('app_membres_index')}}">Membres</a></li>
+<li><a href="{{path('app_cat_tournois')}}">Catégorie de
+tournois</a></li>
+</ul>
+</li>
 <li class="menu">
 <a href="{{path('app_stages_index')}}">
 <i class="fa fa-th"></i>
