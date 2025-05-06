@@ -158,6 +158,7 @@ class CatTournoisController extends AbstractController
                 'success',
                 'La catégorie de tournois ' . $categorie->getLibelle() . ' a été supprimée.'
             );
+            return $this->redirectToRoute('app_cat_tournois');
         }
     }
 }

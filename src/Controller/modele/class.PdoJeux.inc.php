@@ -681,6 +681,7 @@ ORDER BY G.nomMarque';
      * @return le tableau d'objets
      */
     public function getLesMembres()
+    
     {
         $requete = 'SELECT idMembre as identifiant, CONCAT(prenomMembre, " ", nomMembre) AS
 libelle
