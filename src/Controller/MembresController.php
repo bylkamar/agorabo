@@ -23,6 +23,7 @@ final class MembresController extends AbstractController
     {
         return $this->render('membres/index.html.twig', [
             'membres' => $membreRepository->findAll(),
+            'menuActif' => 'Gestion'
         ]);
     }
 

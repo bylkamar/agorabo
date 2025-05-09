@@ -6,6 +6,7 @@ use App\Repository\CatTournoisRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use SYmfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CatTournoisRepository::class)]
 class CatTournois
@@ -14,8 +15,14 @@ class CatTournois
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Le libellé est obligatoire')]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le libellé doit comporter au moins {{ limit }} caractères',
+        maxMessage: 'Le libellé ne peut pas dépasser {{ limit }} caractères',
+    )]
     private ?string $libelle = null;
 
     /**
