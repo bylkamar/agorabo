@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\JeuVideoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JeuVideoRepository::class)]
 class JeuVideo
@@ -15,12 +18,28 @@ class JeuVideo
     private ?int $id = null;
 
     #[ORM\Column(length: 16)]
+    #[Assert\NotBlank(message: 'La référence est obligatoire')]
+    #[Assert\Length(
+        min: 5,
+        max: 16,
+        minMessage: 'Le libellé doit comporter au moins {{ limit }} caractères',
+        maxMessage: 'Le libellé ne peut pas dépasser {{ limit }} caractères',
+    )]
     private ?string $refJeu = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
+    #[Assert\Length(
+        min: 5,
+        max: 100,
+        minMessage: 'Le libellé doit comporter au moins {{ limit }} caractères',
+        maxMessage: 'Le libellé ne peut pas dépasser {{ limit }} caractères',
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
+    #[Assert\NotBlank(message: 'Le prix est obligatoire')]
+    #[Assert\Range(min: 0.1, max: 999)]
     private ?string $prix = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

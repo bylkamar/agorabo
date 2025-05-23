@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Jeu vidéo
+{% endblock %}
+{% block body %}
+	<div class="container contenu-blanc">
+		<h1>Créer un nouveau jeu vidéo</h1>
+		{{ include('jeux/jeux.html.twig', {form: form, button: 'Enregistrer'}) }}
+	</div>
+{% endblock %}

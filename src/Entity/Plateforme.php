@@ -34,7 +34,7 @@ class Plateforme
         return $this->id;
     }
 
-    public function getPlateforme(): ?string
+    public function getLibelle(): ?string
     {
         return $this->plateforme;
     }
@@ -68,7 +68,7 @@ class Plateforme
     {
         if ($this->jeuVideos->removeElement($jeuVideo)) {
             // set the owning side to null (unless already changed)
-            if ($jeuVideo->getPlateforme() === $this) {
+            if ($jeuVideo->getNom() === $this) {
                 $jeuVideo->setPlateforme(null);
             }
         }

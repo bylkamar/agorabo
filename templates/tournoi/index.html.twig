@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+{% block title %}Les Tournois
+{% endblock %}
+
+{% block body %}
+	<div class="col-md-12 contenu-blanc">
+		<h1>Les
+			<span>{{ lesTournois | length }}</span>
+			tournois de jeux</h1>
+		{{ include('messages.html.twig') }}
+		<div class="contenu">
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+					<tr class="bg-entete">
+						<th>Identifiant</th>
+						<th>Libellé</th>
+						<th>Catégorie</th>
+						<th>Date</th>
+						<th>Date Création</th>
+						<th>Nombre Participant</th>
+						<th>Participants</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<!-- formulaire pour ajouter une nouvelle catégorie-->
+					<tr>
+						{{ form_start(formCreation) }}
+						<td class="col-md-1">Nouveau</td>
+						<td class="col-md-6">{{ form_widget(formCreation.libelle) }}
+							{{ form_errors(formCreation.libelle) }}</td>
+						<td class="col-md-6">{{ form_widget(formCreation.categorie) }}
+							{{ form_errors(formCreation.categorie) }}</td>
+						<td class="col-md-6">{{ form_widget(formCreation.date) }}
+							{{ form_errors(formCreation.date) }}</td>
+						<td class="col-md-6">{{ form_widget(formCreation.dateCreation) }}
+							{{ form_errors(formCreation.dateCreation) }}</td>
+						<td class="col-md-6">{{ form_widget(formCreation.nb_participants) }}
+							{{ form_errors(formCreation.nb_participants) }}</td>
+						<td class="col-md-6">{{ form_widget(formCreation.participants) }}
+							{{ form_errors(formCreation.participants) }}</td>
+						<td class="col-md-3">
+							<button class="btn btn-primary btn-sm" type="submit" formaction="{{ path('app_tournois_ajouter') }}" title="Enregistrer nouveau tournoi">
+								<i class="fa fasave"></i>
+								Enregistrer</button>
+							<button class="btn btn-info btn-sm" type="reset" title="Effacer la saisie">
+								<i class="fa fa-eraser"></i>
+								Annuler
+							</button>
+						</td>
+						{# Ceci va générer le champ CSRF #}
+						{{ form_rest(formCreation) }}
+						{{ form_end(formCreation) }}
+					</tr>
+
+
+					{% for key, tournoi in lesTournois %}
+						<tr>
+							{% if tournoi.id != idTournoiModif %}
+
+								<td>{{ tournoi.id }}</td>
+								<td>{{ tournoi.libelle }}</td>
+								<td>{{ tournoi.categorie.libelle }}</td>
+								<td>{{ tournoi.date | date('d/m/y') }}</td>
+								<td>{{ tournoi.dateCreation | date('d/m/y') }}</td>
+								<td>{{ tournoi.nbParticipants  }}</td>
+								<td>
+									{% for participant in tournoi.participants %}
+										{{ participant.nom }}
+										{% if not loop.last %},
+										{% endif %}
+									{% endfor %}
+								</td>
+								<!-- formulaire pour demander la modification ou la suppression -->
+								<td>
+									<form>
+										<button type="submit" class="btn btn-primary btn-sm" formaction="{{ path('app_tournois_demandermodification', {'id' : tournoi.id }) }}" title="Modifier">
+											<i class="fa fa-pencil"></i>Modifier</button>
+										<button class="btn btn-danger btn-sm" type="submit" formaction="{{path('app_tournois_supprimer', {'id' : tournoi.id }) }}" title="Supprimer" onclick="return confirm('Voulez-vous vraiment supprimer ce tournoi ?');">
+											<i class="fa fa-trash-o "></i>Supprimer</button>
+										<input
+										type="hidden" name="_token" value="{{ csrf_token('action-item' ~ tournoi.id) }}">
+									{# ~ pour concaténer des chaines en twig #}
+									</form>
+								</td>
+
+							{% else %}
+								<!-- formulaire pour modifier un tournoi -->
+								{{ form_start(formModification) }}
+								<td>{{ tournoi.id }}</td>
+								<td>{{ form_widget(formModification.libelle) }}
+									{{form_errors(formModification.libelle) }}</td>
+								<td>{{ form_widget(formModification.categorie) }}
+									{{form_errors(formModification.categorie) }}</td>
+								<td>{{ form_widget(formModification.date) }}
+									{{form_errors(formModification.date) }}</td>
+								<td>{{ form_widget(formModification.dateCreation) }}
+									{{form_errors(formModification.dateCreation) }}</td>
+								<td>{{ form_widget(formModification.nb_participants) }}
+									{{form_errors(formModification.nb_participants) }}</td>
+								<td>{{ form_widget(formModification.participants) }}
+									{{form_errors(formModification.participants) }}</td>
+
+								<td class="col-md-4">
+									<button class="btn btn-primary btn-sm" type="submit" formaction="{{path('app_tournois_modifier', {'id' : tournoi.id }) }}" title="Enregistrer">
+										<i class="fa fa-save"></i>Enregistrer</button>
+									<button class="btn btn-info btn-sm" type="reset" title="Effacer la saisie">
+										<i class="fa fa-eraser"></i>Effacer</button>
+									<button class="btn btn-warning btn-sm" type="submit" formaction="{{ path('app_tournois') }}" title="Annuler">
+										<i class="fa fa-undo"></i>Annuler</button>
+								</td>
+								{# Ceci va générer le champ CSRF #}
+								{{ form_rest(formModification) }}
+								{{ form_end(formModification) }}
+							{% endif %}
+
+
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<!--fin div contenu-->
+	</div>
+	<!--fin div col-md-6-->
+{% endblock %}

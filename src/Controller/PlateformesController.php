@@ -1,108 +1,144 @@
 <?php
-// src/Controller/PlateformesController.php
+
 namespace App\Controller;
 
-
-use Symfony\Component\HttpFoundation\Response;
-
-
-require_once 'modele/class.PdoJeux.inc.php';
-
-
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Plateforme;
+use App\Form\PlateformeType;
+use App\Repository\PlateformeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
-use PdoJeux;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class PlateformesController extends AbstractController
 {
-    /**
-     * fonction pour afficher la liste des plateformes
-     * @param $db
-     * @param $idPlateformeModif positionné si demande de modification
-     * @param $idPlateformeNotif positionné si mise à jour dans la vue
-     * @param $notification pour notifier la mise à jour dans la vue
-     */
-    private function afficherPlateformes(
-        PdoJeux $db,
-        int $idPlateformeModif,
-        int $idPlateformeNotif,
-        string $notification
-    ) {
-        $tbPlateformes = $db->getLesPlateformes();
-        return $this->render('lesPlateformes.html.twig', array(
-            'menuActif' => 'Jeux',
-            'tbPlateformes' => $tbPlateformes,
-            'idPlateformeModif' => $idPlateformeModif,
-            'idPlateformeNotif' => $idPlateformeNotif,
-            'notification' => $notification
-        ));
-    }
-    /**
-     * @Route("/plateformes", name="plateformes_afficher")
-     */
-    #[Route('/plateformes', name: 'plateformes_afficher')]
-    public function index(SessionInterface $session)
+    // Route principale pour afficher les plateformes et les formulaires de création et de modification
+#[Route('/plateformes', name: 'app_plateformes')]
+ #[Route('/plateformes/demandermodification/{id<\d+>}', name: 'app_plateformes_demandermodification')]
+    public function index(PlateformeRepository $repository, Request $request, $id = null): Response
     {
-        if ($this->getUser()) {
-            $db = PdoJeux::getPdoJeux();
-            return $this->afficherPlateformes($db, -1, -1, 'rien');
+        // Création du formulaire pour ajouter une nouvelle plateforme
+        $plateforme = new Plateforme();
+        $formCreation = $this->createForm(PlateformeType::class, $plateforme);
+
+        // Si un id est fourni, on prépare un formulaire de modification pour la plateforme correspondante
+        $formModificationView = null;
+        if ($id != null) {
+            // Sécurité : vérifie le token CSRF
+            if ($this->isCsrfTokenValid('action-item' . $id, $request->get('_token'))) {
+                $plateformeModif = $repository->find($id); // Recherche de la plateforme à modifier
+                $formModificationView = $this->createForm(PlateformeType::class, $plateformeModif)->createView();
+            }
+        }
+
+        // Récupère toutes les plateformes pour les afficher
+        $lesPlateformes = $repository->findAll();
+
+        // Affiche la vue avec le formulaire d'ajout, la liste et potentiellement le formulaire de modification
+        return $this->render('plateformes/index.html.twig', [
+            'formCreation' => $formCreation->createView(),
+            'lesPlateformes' => $lesPlateformes,
+            'formModification' => $formModificationView,
+            'idPlateformeModif' => $id,
+            'menuActif' => 'Gestion',
+        ]);
+    }
+
+    // Route pour ajouter une nouvelle plateforme
+#[Route('/plateformes/ajouter', name: 'app_plateformes_ajouter')]
+    public function ajouter( Plateforme $plateforme = null, Request $request, EntityManagerInterface $entityManager,PlateformeRepository $repository) {
+        // Création d'un nouveau formulaire lié à une nouvelle instance de Plateforme
+        $plateforme = new Plateforme();
+        $form = $this->createForm(PlateformeType::class, $plateforme);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrement de la nouvelle plateforme en base
+            $entityManager->persist($plateforme);
+            $entityManager->flush();
+
+            // Message flash pour confirmer l'ajout
+            $this->addFlash(
+                'success',
+                'La plateforme ' . $plateforme->getLibelle() . ' a été ajoutée.'
+            );
+
+            // Redirection vers la liste des plateformes
+            return $this->redirectToRoute('app_plateformes');
         } else {
-            return $this->render('connexion.html.twig');
+            // Si formulaire invalide, on réaffiche la liste avec les erreurs
+            $lesPlateformes = $repository->findAll();
+            return $this->render('plateformes/index.html.twig', [
+                'formCreation' => $form->createView(),
+                'lesPlateformes' => $lesPlateformes,
+                'formModification' => null,
+                'idPlateformeModif' => null,
+            ]);
         }
     }
-    /**
-     * @Route("/plateformes/ajouter", name="plateformes_ajouter")
-     */
-    #[Route('/plateformes/ajouter', name: 'plateformes_ajouter')]
-    public function ajouter(SessionInterface $session, Request $request)
-    {
-        $db = PdoJeux::getPdoJeux();
-        if (!empty($request->request->get('txtLibPlateforme'))) {
-            $idPlateformeNotif = $db->ajouterPlateforme($request->request->get('txtLibPlateforme'));
-            $notification = 'Ajouté';
+
+    // Route pour modifier une plateforme existante
+#[Route('/plateformes/modifier/{id<\d+>}', name: 'app_plateformes_modifier')]
+    public function modifier(Plateforme $plateforme = null,Request $request,EntityManagerInterface $entityManager,PlateformeRepository $repository ) {
+        // Création du formulaire de modification à partir de l'objet déjà existant
+        $form = $this->createForm(PlateformeType::class, $plateforme);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Mise à jour des données en base
+            $entityManager->flush();
+
+            // Message de confirmation
+            $this->addFlash(
+                'success',
+                'La plateforme ' . $plateforme->getLibelle() . ' a été modifiée.'
+            );
+
+            // Redirection vers la liste
+            return $this->redirectToRoute('app_plateformes');
+        } else {
+            // Si formulaire non valide, afficher les erreurs et formulaire de création
+            $plateformeNew = new Plateforme();
+            $formCreation = $this->createForm(PlateformeType::class, $plateformeNew);
+            $lesPlateformes = $repository->findAll();
+
+            return $this->render('plateformes/index.html.twig', [
+                'formCreation' => $formCreation->createView(),
+                'lesPlateformes' => $lesPlateformes,
+                'formModification' => $form->createView(),
+                'idPlateformeModif' => $plateforme->getId(),
+            ]);
         }
-        return $this->afficherPlateformes($db, -1, $idPlateformeNotif, $notification);
     }
-    /**
-     * @Route("/plateformes/demandermodifier", name="plateformes_demandermodifier")
-     */
-    #[Route('/plateformes/demandermodifier', name: 'plateformes_demandermodifier')]
-    public function demanderModifier(SessionInterface $session, Request $request)
-    {
-        $db = PdoJeux::getPdoJeux();
-        return $this->afficherPlateformes($db, $request->request->get('txtIdPlateforme'), -1, 'rien');
-    }
-    /**
-     * @Route("/plateformes/validermodifier", name="plateformes_validermodifier")
-     */
-    #[Route('/plateformes/validermodifier', name: 'plateformes_validermodifier')]
-    public function validerModifier(SessionInterface $session, Request $request)
-    {
-        $db = PdoJeux::getPdoJeux();
-        $db->modifierPlateforme($request->request->get('txtIdPlateforme'), $request->request->get('txtLibPlateforme'));
-        return $this->afficherPlateformes(
-            $db,
-            -1,
-            $request->request->get('txtIdPlateforme'),
-            'Modifié'
-        );
-    }
-    /**
-     * @Route("/plateformes/supprimer", name="plateformes_supprimer")
-     */
-    #[Route('/plateformes/supprimer', name: 'plateformes_supprimer')]
-    public function supprimer(SessionInterface $session, Request $request)
-    {
-        $db = PdoJeux::getPdoJeux();
-        $db->supprimerPlateforme($request->request->get('txtIdPlateforme'));
-        $this->addFlash(
-            'success',
-            'La plateforme a été supprimé'
-        );
-        return $this->afficherPlateformes($db, -1, -1, 'rien');
+
+    // Route pour supprimer une plateforme
+#[Route('/plateformes/supprimer/{id<\d+>}', name: 'app_plateformes_supprimer')]
+    public function supprimer(Plateforme $plateforme = null, Request $request,EntityManagerInterface $entityManager
+    ) {
+        // Vérifie le token CSRF pour sécuriser la suppression
+        if ($this->isCsrfTokenValid('action-item' . $plateforme->getId(), $request->get('_token'))) {
+            // Vérifie si des jeux vidéos sont liés à cette plateforme
+            if ($plateforme->getJeuVideos()->count() > 0) {
+                $this->addFlash(
+                    'error',
+                    'Il existe des jeux associés à la plateforme ' . $plateforme->getLibelle() . ', elle ne peut pas être supprimée.'
+                );
+                return $this->redirectToRoute('app_plateformes');
+            }
+
+            // Supprime la plateforme
+            $entityManager->remove($plateforme);
+            $entityManager->flush();
+
+            // Message de confirmation
+            $this->addFlash(
+                'success',
+                'La plateforme ' . $plateforme->getLibelle() . ' a été supprimée.'
+            );
+        }
+
+        // Redirection vers la liste
+        return $this->redirectToRoute('app_plateformes');
     }
 }

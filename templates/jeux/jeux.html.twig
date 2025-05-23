@@ -1,0 +1,51 @@
+<div
+	class="container-fluid contenu">
+	{# -- formulaire jeux video -- #}
+	{{ form_start(form) }}
+	<div class="row">
+		<div class="col-md-2">{{ form_row(form.refJeu) }}</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-2">{{ form_row(form.nom) }}</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1">{{ form_row(form.prix) }}</div>
+		<div class="col-md-2"></div>
+		<div class="col-md-2">{{ form_row(form.plateforme) }}</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1 col-form-label">{{ form_row(form.pegi) }}</div>
+
+		<div class="col-md-2"></div>
+		<div class="col-md-2">{{ form_row(form.genre) }}</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">{{ form_row(form.dateParution) }}</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-2">{{ form_row(form.marque) }}</div>
+	</div>
+	<div class="row">
+		<div>{{ form_rest(form) }}</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1"><BR></div>
+	</div>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-1">
+			<button class="btn btn-primary btn-xs">
+				<i class="fa fa-save"></i>
+				{{button|default('Enregistrer') }}</button>
+		</div>
+		<div class="col-md-1">
+			<button class="btn btn-info btn-xs" type="reset" title="Effacer la saisie">
+				<i class="fa fa-eraser">
+					Annuler</i>
+			</button>
+		</div>
+		<div class="col-md-1">
+			<a href="{{ path('app_jeux')}}" class="btn btn-secondary btn-xs">
+				<i class="fa fa-undo"></i>
+				Retour liste</a>
+		</span>
+	</th>
+</div></div>{{ form_end(form) }}</div>

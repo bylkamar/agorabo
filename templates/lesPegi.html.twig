@@ -32,18 +32,18 @@
 								<td>Nouveau</td>
 								<td>
 									<input type="number" id="txtAgePegi" name="txtAgePegi" size="24" required minlength="1" maxlength="2" placeholder="Age" title="De 4 à 24
-									caractères"/>
+																		caractères"/>
 								</td>
 								<td>
 									<input type="text" id="txtDescPegi" name="txtDescPegi" size="24" required minlength="4" maxlength="150" placeholder="Libellé" title="De 4 à 24
-									caractères"/>
+																		caractères"/>
 								</td>
 								<td>
 									<button class="btn btn-primary btn-xs" type="submit" name="cmdAction" value="ajouterNouveauPegi" title="Enregistrer nouveau Pegi">
 										<i class="fa fa-save"></i>
 									</button>
 									<button class="btn btn-info btn-xs" type="reset" title="Effacer la
-											saisie">
+																						saisie">
 										<i class="fa fa-eraser"></i>
 									</button>
 								</td>
@@ -71,7 +71,7 @@
 											<i class="fa fa-pencil"></i>
 										</button>
 										<button class="btn btn-danger btn-xs" type="submit" name="cmdAction" value="supprimerPegi" title="Supprimer" formaction="{{path('pegis_supprimer')}}" onclick="return confirm('Voulez-vous
-												vraiment supprimer ce Pegi ?');">
+																								vraiment supprimer ce Pegi ?');">
 											<i class="fa fa-trash-o "></i>
 										</button>
 									</td>
@@ -86,10 +86,10 @@
 										<i class="fa fa-save"></i>
 									</button>
 									<button class="btn btn-info btn-xs" type="reset" title="Effacer
-											la saisie">
+																						la saisie">
 										<i class="fa fa-eraser"></i>
 									</button>
-									<button class="btn btn-warning btn-xs" type="submit" name="cmdAction" value="annulerModifierPegi" title="Annuler" formaction="{{path('pegis_afficher')}}">
+									<button class="btn btn-warning btn-xs" type="submit" name="cmdAction" value="annulerModifierPegi" title="Annuler" formaction="{{path('app_pegis')}}">
 										<i class="fa fa-undo"></i>
 									</button>
 								</td>
